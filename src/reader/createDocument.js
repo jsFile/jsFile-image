@@ -12,7 +12,7 @@ export default function (data) {
 
         resolve(new Document({
             name: this.fileName,
-            pages: [page]
+            content: [page]
         }));
     }.bind(this));
 };
