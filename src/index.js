@@ -14,6 +14,7 @@ const files = {
         'image/pjpeg',
         'image/png',
         'image/svg+xml',
+        'image/x-icon',
         'image/tiff',
         'image/vnd.microsoft.icon',
         'image/vnd.wap.wbmp'

@@ -25,20 +25,24 @@ describe('jsFile-image', () => {
         let name;
         for (name in files) {
             if (files.hasOwnProperty(name)) {
-                const jf = new JsFile(files[name], {
-                    workerPath: '/base/dist/workers/'
-                });
-                const promise = jf.read().then(done, done);
+                (function (file, name) {
+                    const jf = new JsFile(file, {
+                        workerPath: '/base/dist/workers/'
+                    });
+                    const promise = jf.read().then(done, done);
 
-                queue.push(promise);
+                    queue.push(promise);
 
-                function done (result) {
-                    assert.instanceOf(result, JsFile.Document, name);
-                    const json = result.json();
-                    assert.jsonSchema(json, documentSchema, name);
-                    const isEmpty = json.length === 0;
-                    assert.isFalse(isEmpty, 'File ' + name + 'shouldn\'t be empty');
-                }
+                    function done (result) {
+                        assert.instanceOf(result, JsFile.Document, name);
+                        const html = result.html();
+                        const json = result.json();
+                        assert.jsonSchema(json, documentSchema, name);
+                        const img = html.querySelector('img');
+                        const isEmpty = Boolean(img && img.src);
+                        assert.isFalse(isEmpty, 'File ' + name + 'should have a source of image');
+                    }
+                }(files[name], name));
             }
         }
 

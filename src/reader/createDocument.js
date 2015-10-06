@@ -1,4 +1,4 @@
-import JsFile from 'JsFile';
+import {Document} from 'JsFile';
 
 export default function (data) {
     return new Promise(function (resolve) {

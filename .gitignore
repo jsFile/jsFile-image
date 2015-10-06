@@ -54,3 +54,4 @@ build/Release
 node_modules
 .DS_Store
 dist/workers
+tests/filesCache.js

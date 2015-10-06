@@ -85,7 +85,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @type {{mime: Array}}
 	 */
 	var files = {
-	    mime: ['image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/svg+xml', 'image/tiff', 'image/vnd.microsoft.icon', 'image/vnd.wap.wbmp']
+	    mime: ['image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/svg+xml', 'image/x-icon', 'image/tiff', 'image/vnd.microsoft.icon', 'image/vnd.wap.wbmp']
 	};
 
 	var ImageEngine = (function (_Engine) {
@@ -172,23 +172,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 	var _JsFile = __webpack_require__(1);
-
-	var _JsFile2 = _interopRequireDefault(_JsFile);
 
 	exports['default'] = function (data) {
 	    return new Promise((function (resolve) {
-	        var page = Document.elementPrototype;
-	        var img = Document.elementPrototype;
+	        var page = _JsFile.Document.elementPrototype;
+	        var img = _JsFile.Document.elementPrototype;
 
 	        page.properties.tagName = 'DIV';
 	        img.properties.tagName = 'IMG';
 	        img.properties.src = data;
 	        page.children.push(img);
 
-	        resolve(new Document({
+	        resolve(new _JsFile.Document({
 	            name: this.fileName,
 	            pages: [page]
 	        }));
