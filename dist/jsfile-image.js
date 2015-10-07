@@ -185,8 +185,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        page.children.push(img);
 
 	        resolve(new _JsFile.Document({
-	            name: this.fileName,
-	            pages: [page]
+	            meta: {
+	                name: this.fileName
+	            },
+	            content: [page]
 	        }));
 	    }).bind(this));
 	};

@@ -11,7 +11,9 @@ export default function (data) {
         page.children.push(img);
 
         resolve(new Document({
-            name: this.fileName,
+            meta: {
+                name: this.fileName
+            },
             content: [page]
         }));
     }.bind(this));

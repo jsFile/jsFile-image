@@ -39,8 +39,8 @@ describe('jsFile-image', () => {
                         const json = result.json();
                         assert.jsonSchema(json, documentSchema, name);
                         const img = html.querySelector('img');
-                        const isEmpty = Boolean(img && img.src);
-                        assert.isFalse(isEmpty, 'File ' + name + 'should have a source of image');
+                        const isEmpty = !img || !img.src;
+                        assert.isFalse(isEmpty, 'File ' + name + ' should have a source of image');
                     }
                 }(files[name], name));
             }
