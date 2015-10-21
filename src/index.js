@@ -7,6 +7,18 @@ import createDocument from './reader/createDocument';
  * @type {{mime: Array}}
  */
 const files = {
+    extension: [
+        'gif',
+        'jpg',
+        'jpeg',
+        'pjpeg',
+        'png',
+        'svg',
+        'ico',
+        'tif',
+        'tiff',
+        'wbmp'
+    ],
     mime: [
         'image/gif',
         'image/jpg',
@@ -16,6 +28,7 @@ const files = {
         'image/svg+xml',
         'image/x-icon',
         'image/tiff',
+        'image/tiff-fx',
         'image/vnd.microsoft.icon',
         'image/vnd.wap.wbmp'
     ]
