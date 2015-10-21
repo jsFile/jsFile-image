@@ -11,7 +11,6 @@ const files = {
         'gif',
         'jpg',
         'jpeg',
-        'pjpeg',
         'png',
         'svg',
         'ico',
