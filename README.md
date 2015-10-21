@@ -4,6 +4,18 @@ Engine for jsFile library to work with images
 
 
 
+## Supported formats
+* [WBMP](https://en.wikipedia.org/wiki/Wireless_Application_Protocol_Bitmap_Format)
+* [GIF](https://en.wikipedia.org/wiki/GIF)
+* [JPEG](https://en.wikipedia.org/wiki/JPEG)
+* [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics)
+* [SVG](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics)
+* [ICO](https://en.wikipedia.org/wiki/ICO_(file_format))
+* [TIFF](https://en.wikipedia.org/wiki/Tagged_Image_File_Format)
+
+
+
+
 ## Installation
 ### via NPM
 
@@ -35,15 +47,3 @@ import JsFileImage from 'jsfile-image';
 const jf = new JsFile(file, options);
 ````
 `file` - an image file. You may find information about options and `jsFile` in [documentation](https://github.com/jsFile/jsFile#installation)
-
-
-
-
-## Supported formats
-* [WBMP](https://en.wikipedia.org/wiki/Wireless_Application_Protocol_Bitmap_Format)
-* [GIF](https://en.wikipedia.org/wiki/GIF)
-* [JPEG](https://en.wikipedia.org/wiki/JPEG)
-* [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics)
-* [SVG](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics)
-* [ICO](https://en.wikipedia.org/wiki/ICO_(file_format))
-* [TIFF](https://en.wikipedia.org/wiki/Tagged_Image_File_Format)
