@@ -1,6 +1,21 @@
 # jsFile-image [![Build Status](https://secure.travis-ci.org/jsFile/jsFile-image.png?branch=master)](https://travis-ci.org/jsFile/jsFile-image)
 Engine for jsFile library to work with images
 
+
+
+
+## Supported formats
+* [WBMP](https://en.wikipedia.org/wiki/Wireless_Application_Protocol_Bitmap_Format)
+* [GIF](https://en.wikipedia.org/wiki/GIF)
+* [JPEG](https://en.wikipedia.org/wiki/JPEG)
+* [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics)
+* [SVG](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics)
+* [ICO](https://en.wikipedia.org/wiki/ICO_(file_format))
+* [TIFF](https://en.wikipedia.org/wiki/Tagged_Image_File_Format)
+
+
+
+
 ## Installation
 ### via NPM
 
@@ -20,6 +35,8 @@ $ git clone git://github.com/jsFile/jsFile-image.git
 ### from latest version
 
 Also you can download [the latest release](https://github.com/jsFile/jsFile-image/tree/master/dist) of `Image` engine and include built files to your project.
+
+
 
 
 ##Usage
