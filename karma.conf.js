@@ -45,7 +45,12 @@ module.exports = function (config) {
                             stage: 0
                         }
                     }
-                ]
+                ],
+                postLoaders: [{
+                    test: /\.js/,
+                    exclude: /(node_modules|bower_components|dist|tests)/,
+                    loader: 'istanbul-instrumenter'
+                }]
             }
         },
 

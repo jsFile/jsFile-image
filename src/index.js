@@ -1,6 +1,7 @@
 import {Engine, defineEngine} from 'JsFile';
 import parseImageFile from './reader/parseImageFile';
 import createDocument from './reader/createDocument';
+import parseWbmp from './reader/parseWbmp';
 
 /**
  * @description Supported files by engine
@@ -16,8 +17,7 @@ const files = {
         'svg',
         'ico',
         'tif',
-        'tiff',
-        'wbmp'
+        'tiff'
     ],
     mime: [
         'image/gif',
@@ -29,10 +29,17 @@ const files = {
         'image/x-icon',
         'image/tiff',
         'image/tiff-fx',
-        'image/vnd.microsoft.icon',
-        'image/vnd.wap.wbmp'
+        'image/vnd.microsoft.icon'
     ]
 };
+
+const wbmpFiles = {
+    extension: ['wbmp'],
+    mime: ['image/vnd.wap.wbmp']
+};
+
+files.extension.push.apply(files.extension, wbmpFiles.extension);
+files.mime.push.apply(files.mime, wbmpFiles.mime);
 
 class ImageEngine extends Engine {
     createDocument = createDocument
@@ -40,6 +47,12 @@ class ImageEngine extends Engine {
     files = files
 
     parser = parseImageFile
+
+    parseWbmp = parseWbmp
+
+    isWbmp () {
+        return Boolean(this.file && Engine.validateFile(this.file, wbmpFiles));
+    }
 
     static test (file) {
         return Boolean(file && Engine.validateFile(file, files));

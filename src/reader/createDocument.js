@@ -1,7 +1,7 @@
 import JsFile from 'JsFile';
-const {Document, Engine: {normalizeDataUri}} = JsFile;
+const {Document} = JsFile;
 
-export default function (data) {
+export default function (obj) {
     return new Promise(function (resolve) {
         const page = Document.elementPrototype;
         const img = Document.elementPrototype;
@@ -9,7 +9,7 @@ export default function (data) {
 
         page.properties.tagName = 'DIV';
         img.properties.tagName = 'IMG';
-        img.properties.src = normalizeDataUri(data, fileName);
+        img.properties.src = obj.properties.src;
         page.children.push(img);
 
         resolve(new Document({

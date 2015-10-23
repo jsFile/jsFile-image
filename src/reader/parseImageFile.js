@@ -1,19 +1,35 @@
 import JsFile from 'JsFile';
-const {errors: {notFoundMethodCreateDocument}} = JsFile.Engine;
+const {errors: {notFoundMethodCreateDocument}, normalizeDataUri} = JsFile.Engine;
 
 export default function () {
     return new Promise(function (resolve, reject) {
-        this.readFileEntry({
-            file: this.file,
-            method: 'readAsDataURL'
-        }).then(function (result) {
+        let promise;
+        const fileName = this.fileName;
+
+        if (this.isWbmp()) {
+            promise = this.parseWbmp();
+        } else {
+            promise = this.readFileEntry({
+                file: this.file,
+                method: 'readAsDataURL'
+            }).then((src) => {
+                return {
+                    properties: {
+                        src: normalizeDataUri(src, fileName)
+                    }
+                };
+            });
+        }
+
+        promise.then(function (result) {
             if (typeof this.createDocument !== 'function') {
                 reject(new Error(notFoundMethodCreateDocument));
                 return;
             }
 
             this.createDocument(result).then(resolve, reject);
-        }.bind(this),
-        reject);
+        }.bind(this));
+
+        promise.catch(reject);
     }.bind(this));
 }

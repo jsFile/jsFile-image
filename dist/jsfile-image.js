@@ -80,14 +80,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _readerCreateDocument2 = _interopRequireDefault(_readerCreateDocument);
 
+	var _readerParseWbmp = __webpack_require__(4);
+
+	var _readerParseWbmp2 = _interopRequireDefault(_readerParseWbmp);
+
 	/**
 	 * @description Supported files by engine
 	 * @type {{mime: Array}}
 	 */
 	var files = {
-	    extension: ['gif', 'jpg', 'jpeg', 'pjpeg', 'png', 'svg', 'ico', 'tif', 'tiff', 'wbmp'],
-	    mime: ['image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/svg+xml', 'image/x-icon', 'image/tiff', 'image/tiff-fx', 'image/vnd.microsoft.icon', 'image/vnd.wap.wbmp']
+	    extension: ['gif', 'jpg', 'jpeg', 'pjpeg', 'png', 'svg', 'ico', 'tif', 'tiff'],
+	    mime: ['image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/svg+xml', 'image/x-icon', 'image/tiff', 'image/tiff-fx', 'image/vnd.microsoft.icon']
 	};
+
+	var wbmpFiles = {
+	    extension: ['wbmp'],
+	    mime: ['image/vnd.wap.wbmp']
+	};
+
+	files.extension.push.apply(files.extension, wbmpFiles.extension);
+	files.mime.push.apply(files.mime, wbmpFiles.mime);
 
 	var ImageEngine = (function (_Engine) {
 	    _inherits(ImageEngine, _Engine);
@@ -100,9 +112,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.createDocument = _readerCreateDocument2['default'];
 	        this.files = files;
 	        this.parser = _readerParseImageFile2['default'];
+	        this.parseWbmp = _readerParseWbmp2['default'];
 	    }
 
-	    _createClass(ImageEngine, null, [{
+	    _createClass(ImageEngine, [{
+	        key: 'isWbmp',
+	        value: function isWbmp() {
+	            return Boolean(this.file && _JsFile.Engine.validateFile(this.file, wbmpFiles));
+	        }
+	    }], [{
 	        key: 'test',
 	        value: function test(file) {
 	            return Boolean(file && _JsFile.Engine.validateFile(file, files));
@@ -143,21 +161,40 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _JsFile2 = _interopRequireDefault(_JsFile);
 
-	var notFoundMethodCreateDocument = _JsFile2['default'].Engine.errors.notFoundMethodCreateDocument;
+	var _JsFile$Engine = _JsFile2['default'].Engine;
+	var notFoundMethodCreateDocument = _JsFile$Engine.errors.notFoundMethodCreateDocument;
+	var normalizeDataUri = _JsFile$Engine.normalizeDataUri;
 
 	exports['default'] = function () {
 	    return new Promise((function (resolve, reject) {
-	        this.readFileEntry({
-	            file: this.file,
-	            method: 'readAsDataURL'
-	        }).then((function (result) {
+	        var promise = undefined;
+	        var fileName = this.fileName;
+
+	        if (this.isWbmp()) {
+	            promise = this.parseWbmp();
+	        } else {
+	            promise = this.readFileEntry({
+	                file: this.file,
+	                method: 'readAsDataURL'
+	            }).then(function (src) {
+	                return {
+	                    properties: {
+	                        src: normalizeDataUri(src, fileName)
+	                    }
+	                };
+	            });
+	        }
+
+	        promise.then((function (result) {
 	            if (typeof this.createDocument !== 'function') {
 	                reject(new Error(notFoundMethodCreateDocument));
 	                return;
 	            }
 
 	            this.createDocument(result).then(resolve, reject);
-	        }).bind(this), reject);
+	        }).bind(this));
+
+	        promise['catch'](reject);
 	    }).bind(this));
 	};
 
@@ -180,9 +217,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _JsFile2 = _interopRequireDefault(_JsFile);
 
 	var Document = _JsFile2['default'].Document;
-	var normalizeDataUri = _JsFile2['default'].Engine.normalizeDataUri;
 
-	exports['default'] = function (data) {
+	exports['default'] = function (obj) {
 	    return new Promise((function (resolve) {
 	        var page = Document.elementPrototype;
 	        var img = Document.elementPrototype;
@@ -190,7 +226,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        page.properties.tagName = 'DIV';
 	        img.properties.tagName = 'IMG';
-	        img.properties.src = normalizeDataUri(data, fileName);
+	        img.properties.src = obj.properties.src;
 	        page.children.push(img);
 
 	        resolve(new Document({
@@ -199,6 +235,140 @@ return /******/ (function(modules) { // webpackBootstrap
 	            },
 	            content: [page]
 	        }));
+	    }).bind(this));
+	};
+
+	;
+	module.exports = exports['default'];
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _JsFile = __webpack_require__(1);
+
+	var _JsFile2 = _interopRequireDefault(_JsFile);
+
+	var invalidReadFile = _JsFile2['default'].Engine.errors.invalidReadFile;
+
+	function writeImageData(data, bit, index) {
+	    var color = bit ? 255 : 0;
+	    data[index++] = color;
+	    data[index++] = color;
+	    data[index++] = color;
+	    data[index++] = 255;
+
+	    return index;
+	}
+
+	function decode(arrayBuffer) {
+	    var bytes = new Uint8Array(arrayBuffer);
+	    var ptr = 0;
+
+	    // Read unsigned multi-byte integer (6.3.1) from the byte stream.
+	    function readMultiByteInteger(bytes) {
+	        var result = 0;
+
+	        while (true) {
+	            if (result & 0xfe000000) {
+	                return null;
+	            }
+
+	            var b = bytes[ptr++];
+	            result = result << 7 | b & 0x7f;
+
+	            if (!(b & 0x80)) {
+	                return result;
+	            }
+	        }
+	    }
+
+	    // Support only image type 0: B/W, no compression
+	    if (readMultiByteInteger(bytes) !== 0) {
+	        return null;
+	    }
+
+	    /**
+	     * @description Unsigned octet from the byte stream
+	     * @type {number}
+	     */
+	    var octet = bytes[ptr++] & 0xff;
+
+	    // Don't expect any extended headers here.
+	    if (octet !== 0) {
+	        return null;
+	    }
+
+	    var width = readMultiByteInteger(bytes);
+	    var height = readMultiByteInteger(bytes);
+
+	    // Reject incorrect image dimensions
+	    if (width === 0 || width > 65535 || height == 0 || height > 65535) {
+	        return null;
+	    }
+
+	    // Create a canvas to draw the pixels into.
+	    var canvas = document.createElement('canvas');
+	    canvas.setAttribute('width', width);
+	    canvas.setAttribute('height', height);
+	    var ctx = canvas.getContext('2d');
+	    var imageData = ctx.createImageData(width, height);
+	    var data = imageData.data;
+
+	    // Decode the image.
+	    for (var y = 0; y < height; ++y) {
+	        for (var x = 0; x < width; x += 8) {
+	            var bits = bytes[ptr++];
+	            var w = (y * width + x) * 4;
+
+	            w = writeImageData(data, bits & 0x80, w);
+	            w = writeImageData(data, bits & 0x40, w);
+	            w = writeImageData(data, bits & 0x20, w);
+	            w = writeImageData(data, bits & 0x10, w);
+	            w = writeImageData(data, bits & 0x08, w);
+	            w = writeImageData(data, bits & 0x04, w);
+	            w = writeImageData(data, bits & 0x02, w);
+	            w = writeImageData(data, bits & 0x01, w);
+	        }
+	    }
+
+	    if (ptr > bytes.length) {
+	        return null;
+	    }
+
+	    ctx.putImageData(imageData, 0, 0);
+	    return canvas.toDataURL('image/png');
+	}
+
+	exports['default'] = function () {
+	    return new Promise((function (resolve, reject) {
+	        var promise = this.readFileEntry({
+	            file: this.file,
+	            method: 'readAsArrayBuffer'
+	        });
+
+	        promise.then(function (arrayBuffer) {
+	            var src = decode(arrayBuffer);
+	            if (!src) {
+	                return reject(new Error(invalidReadFile));
+	            }
+
+	            resolve({
+	                properties: {
+	                    src: src
+	                }
+	            });
+	        });
+
+	        promise['catch'](reject);
 	    }).bind(this));
 	};
 
