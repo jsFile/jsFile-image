@@ -1,4 +1,4 @@
-# jsFile-image [![Build Status](https://secure.travis-ci.org/jsFile/jsFile-image.png?branch=master)](https://travis-ci.org/jsFile/jsFile-image)
+# jsFile-image [![Build Status](https://secure.travis-ci.org/jsFile/jsFile-image.png?branch=master)](https://travis-ci.org/jsFile/jsFile-image) [![Coverage Status](https://coveralls.io/repos/jsFile/jsFile-image/badge.svg?branch=master&service=github)](https://coveralls.io/github/jsFile/jsFile-image?branch=master)
 Engine for jsFile library to work with images
 
 
