@@ -15,22 +15,29 @@ function decode (arrayBuffer) {
     const bytes = new Uint8Array(arrayBuffer);
     let ptr = 0;
 
-    // Read unsigned multi-byte integer (6.3.1) from the byte stream.
+    /**
+     * @description Read unsigned multi-byte integer (6.3.1) from the byte stream.
+     * @param bytes
+     * @returns {number|null}
+     */
     function readMultiByteInteger (bytes) {
-        let result = 0;
+        let value = 0;
+        let result;
 
-        while (true) {
-            if (result & 0xfe000000) {
-                return null;
+        while (result === undefined) {
+            if (value & 0xfe000000) {
+                result = null;
             }
 
             const b = bytes[ptr++];
-            result = (result << 7) | (b & 0x7f);
+            value = (value << 7) | (b & 0x7f);
 
             if (!(b & 0x80)) {
-                return result;
+                result = value;
             }
         }
+
+        return result;
     }
 
     // Support only image type 0: B/W, no compression
@@ -88,26 +95,20 @@ function decode (arrayBuffer) {
     return canvas.toDataURL('image/png');
 }
 
-export default function () {
-    return new Promise(function (resolve, reject) {
-        const promise = this.readFileEntry({
-            file: this.file,
-            method: 'readAsArrayBuffer'
-        });
+export default function parseWbmp () {
+    return this.readFileEntry({
+        file: this.file,
+        method: 'readAsArrayBuffer'
+    }).then((arrayBuffer) => {
+        const src = decode(arrayBuffer);
+        if (!src) {
+            throw new Error(invalidReadFile);
+        }
 
-        promise.then((arrayBuffer) => {
-            const src = decode(arrayBuffer);
-            if (!src) {
-                return reject(new Error(invalidReadFile));
+        return {
+            properties: {
+                src
             }
-
-            resolve({
-                properties: {
-                    src
-                }
-            });
-        });
-
-        promise.catch(reject);
-    }.bind(this));
-};
+        };
+    });
+}

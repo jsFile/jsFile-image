@@ -1,8 +1,8 @@
 import JsFile from 'JsFile';
 const {Document} = JsFile;
 
-export default function (obj) {
-    return new Promise(function (resolve) {
+export default function createDocument (obj) {
+    return new Promise((resolve) => {
         const page = Document.elementPrototype;
         const img = Document.elementPrototype;
         const {fileName} = this;
@@ -18,5 +18,5 @@ export default function (obj) {
             },
             content: [page]
         }));
-    }.bind(this));
-};
+    });
+}

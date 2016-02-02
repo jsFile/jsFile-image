@@ -19,6 +19,10 @@ describe('jsFile-image', () => {
         assert.isFunction(ImageEngine);
     });
 
+    it('should have files for testing', () => {
+        assert.notEqual(Object.keys(files || {}).length, 0);
+    });
+
     it('should read the file', function () {
         this.timeout(15000);
         const queue = [];
@@ -30,7 +34,6 @@ describe('jsFile-image', () => {
                         workerPath: '/base/dist/workers/'
                     });
                     const promise = jf.read().then(done, done);
-
                     queue.push(promise);
 
                     function done (result) {

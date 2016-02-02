@@ -1,7 +1,7 @@
 import JsFile from 'JsFile';
 const {errors: {notFoundMethodCreateDocument}, normalizeDataUri} = JsFile.Engine;
 
-export default function () {
+export default function parseImageFile () {
     return new Promise(function (resolve, reject) {
         let promise;
         const fileName = this.fileName;

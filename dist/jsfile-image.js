@@ -56,40 +56,46 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 	var _JsFile = __webpack_require__(1);
 
-	var _readerParseImageFile = __webpack_require__(2);
+	var _JsFile2 = _interopRequireDefault(_JsFile);
 
-	var _readerParseImageFile2 = _interopRequireDefault(_readerParseImageFile);
+	var _parseImageFile = __webpack_require__(2);
 
-	var _readerCreateDocument = __webpack_require__(3);
+	var _parseImageFile2 = _interopRequireDefault(_parseImageFile);
 
-	var _readerCreateDocument2 = _interopRequireDefault(_readerCreateDocument);
+	var _createDocument = __webpack_require__(3);
 
-	var _readerParseWbmp = __webpack_require__(4);
+	var _createDocument2 = _interopRequireDefault(_createDocument);
 
-	var _readerParseWbmp2 = _interopRequireDefault(_readerParseWbmp);
+	var _parseWbmp = __webpack_require__(4);
+
+	var _parseWbmp2 = _interopRequireDefault(_parseWbmp);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Engine = _JsFile2.default.Engine;
+	var defineEngine = _JsFile2.default.defineEngine;
 
 	/**
 	 * @description Supported files by engine
 	 * @type {{mime: Array}}
 	 */
+
 	var files = {
-	    extension: ['gif', 'jpg', 'jpeg', 'pjpeg', 'png', 'svg', 'ico', 'tif', 'tiff'],
+	    extension: ['gif', 'jpg', 'jpeg', 'png', 'svg', 'ico', 'tif', 'tiff'],
 	    mime: ['image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/svg+xml', 'image/x-icon', 'image/tiff', 'image/tiff-fx', 'image/vnd.microsoft.icon']
 	};
 
@@ -101,43 +107,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	files.extension.push.apply(files.extension, wbmpFiles.extension);
 	files.mime.push.apply(files.mime, wbmpFiles.mime);
 
-	var ImageEngine = (function (_Engine) {
+	var ImageEngine = function (_Engine) {
 	    _inherits(ImageEngine, _Engine);
 
 	    function ImageEngine() {
 	        _classCallCheck(this, ImageEngine);
 
-	        _get(Object.getPrototypeOf(ImageEngine.prototype), 'constructor', this).apply(this, arguments);
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ImageEngine).apply(this, arguments));
 
-	        this.createDocument = _readerCreateDocument2['default'];
-	        this.files = files;
-	        this.parser = _readerParseImageFile2['default'];
-	        this.parseWbmp = _readerParseWbmp2['default'];
+	        _this.createDocument = _createDocument2.default;
+	        _this.files = files;
+	        _this.parser = _parseImageFile2.default;
+	        _this.parseWbmp = _parseWbmp2.default;
+	        return _this;
 	    }
 
 	    _createClass(ImageEngine, [{
 	        key: 'isWbmp',
 	        value: function isWbmp() {
-	            return Boolean(this.file && _JsFile.Engine.validateFile(this.file, wbmpFiles));
+	            return Boolean(this.file && Engine.validateFile(this.file, wbmpFiles));
 	        }
 	    }], [{
 	        key: 'test',
 	        value: function test(file) {
-	            return Boolean(file && _JsFile.Engine.validateFile(file, files));
+	            return Boolean(file && Engine.validateFile(file, files));
 	        }
-	    }, {
-	        key: 'mimeTypes',
-	        value: files.mime.slice(0),
-	        enumerable: true
 	    }]);
 
 	    return ImageEngine;
-	})(_JsFile.Engine);
+	}(Engine);
 
-	(0, _JsFile.defineEngine)(ImageEngine);
+	ImageEngine.mimeTypes = files.mime.slice(0);
+	defineEngine(ImageEngine);
 
-	exports['default'] = ImageEngine;
-	module.exports = exports['default'];
+	exports.default = ImageEngine;
 
 /***/ },
 /* 1 */
@@ -151,22 +154,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	exports.default = parseImageFile;
 
 	var _JsFile = __webpack_require__(1);
 
 	var _JsFile2 = _interopRequireDefault(_JsFile);
 
-	var _JsFile$Engine = _JsFile2['default'].Engine;
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var _JsFile$Engine = _JsFile2.default.Engine;
 	var notFoundMethodCreateDocument = _JsFile$Engine.errors.notFoundMethodCreateDocument;
 	var normalizeDataUri = _JsFile$Engine.normalizeDataUri;
-
-	exports['default'] = function () {
-	    return new Promise((function (resolve, reject) {
+	function parseImageFile() {
+	    return new Promise(function (resolve, reject) {
 	        var promise = undefined;
 	        var fileName = this.fileName;
 
@@ -185,20 +188,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        }
 
-	        promise.then((function (result) {
+	        promise.then(function (result) {
 	            if (typeof this.createDocument !== 'function') {
 	                reject(new Error(notFoundMethodCreateDocument));
 	                return;
 	            }
 
 	            this.createDocument(result).then(resolve, reject);
-	        }).bind(this));
+	        }.bind(this));
 
-	        promise['catch'](reject);
-	    }).bind(this));
-	};
-
-	module.exports = exports['default'];
+	        promise.catch(reject);
+	    }.bind(this));
+	}
 
 /***/ },
 /* 3 */
@@ -206,23 +207,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	exports.default = createDocument;
 
 	var _JsFile = __webpack_require__(1);
 
 	var _JsFile2 = _interopRequireDefault(_JsFile);
 
-	var Document = _JsFile2['default'].Document;
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports['default'] = function (obj) {
-	    return new Promise((function (resolve) {
+	var Document = _JsFile2.default.Document;
+	function createDocument(obj) {
+	    var _this = this;
+
+	    return new Promise(function (resolve) {
 	        var page = Document.elementPrototype;
 	        var img = Document.elementPrototype;
-	        var fileName = this.fileName;
+	        var fileName = _this.fileName;
 
 	        page.properties.tagName = 'DIV';
 	        img.properties.tagName = 'IMG';
@@ -235,11 +238,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            },
 	            content: [page]
 	        }));
-	    }).bind(this));
-	};
-
-	;
-	module.exports = exports['default'];
+	    });
+	}
 
 /***/ },
 /* 4 */
@@ -247,17 +247,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	exports.default = parseWbmp;
 
 	var _JsFile = __webpack_require__(1);
 
 	var _JsFile2 = _interopRequireDefault(_JsFile);
 
-	var invalidReadFile = _JsFile2['default'].Engine.errors.invalidReadFile;
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var invalidReadFile = _JsFile2.default.Engine.errors.invalidReadFile;
 
 	function writeImageData(data, bit, index) {
 	    var color = bit ? 255 : 0;
@@ -273,22 +274,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var bytes = new Uint8Array(arrayBuffer);
 	    var ptr = 0;
 
-	    // Read unsigned multi-byte integer (6.3.1) from the byte stream.
+	    /**
+	     * @description Read unsigned multi-byte integer (6.3.1) from the byte stream.
+	     * @param bytes
+	     * @returns {number|null}
+	     */
 	    function readMultiByteInteger(bytes) {
-	        var result = 0;
+	        var value = 0;
+	        var result = undefined;
 
-	        while (true) {
-	            if (result & 0xfe000000) {
-	                return null;
+	        while (result === undefined) {
+	            if (value & 0xfe000000) {
+	                result = null;
 	            }
 
 	            var b = bytes[ptr++];
-	            result = result << 7 | b & 0x7f;
+	            value = value << 7 | b & 0x7f;
 
 	            if (!(b & 0x80)) {
-	                return result;
+	                result = value;
 	            }
 	        }
+
+	        return result;
 	    }
 
 	    // Support only image type 0: B/W, no compression
@@ -315,7 +323,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return null;
 	    }
 
-	    // Create a canvas to draw the pixels into.
 	    var canvas = document.createElement('canvas');
 	    canvas.setAttribute('width', width);
 	    canvas.setAttribute('height', height);
@@ -323,7 +330,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var imageData = ctx.createImageData(width, height);
 	    var data = imageData.data;
 
-	    // Decode the image.
 	    for (var y = 0; y < height; ++y) {
 	        for (var x = 0; x < width; x += 8) {
 	            var bits = bytes[ptr++];
@@ -348,32 +354,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return canvas.toDataURL('image/png');
 	}
 
-	exports['default'] = function () {
-	    return new Promise((function (resolve, reject) {
-	        var promise = this.readFileEntry({
-	            file: this.file,
-	            method: 'readAsArrayBuffer'
-	        });
+	function parseWbmp() {
+	    return this.readFileEntry({
+	        file: this.file,
+	        method: 'readAsArrayBuffer'
+	    }).then(function (arrayBuffer) {
+	        var src = decode(arrayBuffer);
+	        if (!src) {
+	            throw new Error(invalidReadFile);
+	        }
 
-	        promise.then(function (arrayBuffer) {
-	            var src = decode(arrayBuffer);
-	            if (!src) {
-	                return reject(new Error(invalidReadFile));
+	        return {
+	            properties: {
+	                src: src
 	            }
-
-	            resolve({
-	                properties: {
-	                    src: src
-	                }
-	            });
-	        });
-
-	        promise['catch'](reject);
-	    }).bind(this));
-	};
-
-	;
-	module.exports = exports['default'];
+	        };
+	    });
+	}
 
 /***/ }
 /******/ ])

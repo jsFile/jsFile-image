@@ -1,7 +1,9 @@
-import {Engine, defineEngine} from 'JsFile';
+import JsFile from 'JsFile';
 import parseImageFile from './reader/parseImageFile';
 import createDocument from './reader/createDocument';
 import parseWbmp from './reader/parseWbmp';
+
+const {Engine, defineEngine} = JsFile;
 
 /**
  * @description Supported files by engine
@@ -41,13 +43,13 @@ files.extension.push.apply(files.extension, wbmpFiles.extension);
 files.mime.push.apply(files.mime, wbmpFiles.mime);
 
 class ImageEngine extends Engine {
-    createDocument = createDocument
-
-    files = files
-
-    parser = parseImageFile
-
-    parseWbmp = parseWbmp
+    constructor () {
+        super(...arguments);
+        this.createDocument = createDocument;
+        this.files = files;
+        this.parser = parseImageFile;
+        this.parseWbmp = parseWbmp;
+    }
 
     isWbmp () {
         return Boolean(this.file && Engine.validateFile(this.file, wbmpFiles));
@@ -56,10 +58,9 @@ class ImageEngine extends Engine {
     static test (file) {
         return Boolean(file && Engine.validateFile(file, files));
     }
-
-    static mimeTypes = files.mime.slice(0)
 }
 
+ImageEngine.mimeTypes = files.mime.slice(0);
 defineEngine(ImageEngine);
 
 export default ImageEngine;
