@@ -3,7 +3,7 @@ import parseImageFile from './reader/parseImageFile';
 import createDocument from './reader/createDocument';
 import parseWbmp from './reader/parseWbmp';
 
-const {Engine, defineEngine} = JsFile;
+const {Engine} = JsFile;
 
 /**
  * @description Supported files by engine
@@ -61,6 +61,5 @@ class ImageEngine extends Engine {
 }
 
 ImageEngine.mimeTypes = files.mime.slice(0);
-defineEngine(ImageEngine);
 
 export default ImageEngine;

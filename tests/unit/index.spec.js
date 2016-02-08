@@ -13,10 +13,7 @@ describe('jsFile-image', () => {
 
     before(() => {
         files = window.files;
-    });
-
-    it('should exist', () => {
-        assert.isFunction(ImageEngine);
+        JsFile.defineEngine(ImageEngine);
     });
 
     it('should have files for testing', () => {
